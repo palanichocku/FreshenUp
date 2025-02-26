@@ -1,0 +1,126 @@
+Prompt:
+
+I want to develop an iOS app called FreshenUp. Here is the requirement for the app:
+* It needs to follow Apple's app and UI standard
+* Here are the use cases/requirements for this app:
+   * User needs to be able to scan a drug or medicine using the drug's barcode and store it in a catalog
+   * It needs to have the option for the user to enter the bar code manually if the scanner does not work and be able to use the API to fetch the drug info with a small summary/guide on how to manually enter the barcode
+   * After a successful entry of the drug to the local database, the Barcode needs to be stored locally for any future lookup if the barcode shows up again to avoid another API call
+   * It needs to use publicly available bar code databases to identify the drug using any available API calls. It needs to be very robust so it can get most of the barcodes available in a drug store or Over-The-Counter
+   * It needs to store the following drug details: Name, Short Description, Manufacturer and Expiration Date
+   * Since the expiration date is not available via the Barcode/API typically, user needs to have the ability to easily set the expiration date manually
+   * If the barcode api is not able to a lookup via the API, then it needs to allow the user to enter the drug details manually. User needs to enter: Name, Short Description, Manufacturer and Expiration Date
+   * Track a user's medicine expiration date and alert them before the expiration date based on an alert schedule like a week, a day before or a month before etc.,
+   * It needs to generate a report of the entire user's drug list with regular and expired medicine list that are in the catalog
+   * The full catalog report can be sent to someone via Text or other iPhone available tool so the report can be attached and sent
+   * User needs to be able to delete the entire catalog to clean it out to start fresh if needed with a warning
+   * The user's drug catalog can be categorized as: Prescription or Over-The-Counter.
+   * It should list all the drugs in that category both non-expired and expired
+   * There can be a 'Show Expired' toggle which should show all expired medicines within each category
+   * It must have an About to describe what the app does with developer and support information
+   * It should be very modern and simple
+   
+   Architecture:
+   App Architecture Overview
+The app will follow a modern iOS architecture using Swift and SwiftUI with these key components:
+
+Implementation Summary
+Based on your requirements, here's what I've designed for the FreshenUp app:
+
+Core Architecture
+
+Uses Swift and SwiftUI for modern UI development
+Core Data for local storage of medication information
+AVFoundation for barcode scanning
+UserNotifications for expiration alerts
+
+
+Key Features Implemented
+
+Barcode scanning with multi-API integration for comprehensive drug lookup
+Manual barcode entry with clear guidance
+Local barcode caching to avoid redundant API calls
+Medication catalog with categorization (Prescription/OTC)
+Expiration date tracking and configurable alerts
+Comprehensive reporting system with multiple export formats
+Full medication catalog management
+
+
+UI Design
+
+Tab-based navigation (Home, Scanner, Reports, Settings)
+Modern, clean interfaces following Apple's design guidelines
+Toggle for showing/hiding expired medications
+Category filters for easy medication management
+
+
+Data Management
+
+Robust Core Data model for medication storage
+Efficient querying for expired/non-expired medications
+Multiple barcode lookup APIs with fallbacks
+Report generation in various formats (Text, PDF, CSV)
+
+File Structure
+FreshenUp/
+├── App/
+│   ├── FreshenUpApp.swift           # Main app entry point
+│   └── AppDelegate.swift            # App lifecycle handling
+│
+├── Models/
+│   ├── CoreData/
+│   │   ├── FreshenUp.xcdatamodeld   # Core Data model file
+│   │   ├── Medication.swift         # NSManagedObject subclass
+│   │   └── NotificationAlert.swift  # NSManagedObject subclass
+│   │
+│   ├── MedicationDataManager.swift  # Core Data operations manager
+│   └── MedicationInfo.swift         # Plain model for API results
+│
+├── Views/
+│   ├── Main/
+│   │   ├── ContentView.swift        # Tab container view
+│   │   └── AboutView.swift          # App info view
+│   │
+│   ├── Catalog/
+│   │   ├── MedicationCatalogView.swift # Main catalog view
+│   │   ├── MedicationListView.swift    # List component
+│   │   └── MedicationItemView.swift    # Individual item component
+│   │
+│   ├── Scanner/
+│   │   ├── ScannerView.swift        # Main scanner container view
+│   │   ├── BarcodeScannerView.swift # Camera scanner UI component
+│   │   └── MedicationFormView.swift # Manual entry form
+│   │
+│   ├── Reports/
+│   │   ├── ReportsView.swift        # Main reports view
+│   │   ├── ReportGeneratorView.swift # Report creation UI
+│   │   └── MedicationTableReportView.swift # Table report component
+│   │
+│   └── Settings/
+│       ├── SettingsView.swift       # Main settings view
+│       └── NotificationSettingsView.swift # Alert settings component
+│
+├── ViewModels/
+│   ├── BarcodeScannerViewModel.swift # Scanner screen logic
+│   ├── MedicationCatalogViewModel.swift # Catalog screen logic
+│   └── ReportViewModel.swift        # Report generation logic
+│
+├── Services/
+│   ├── BarcodeService.swift         # Barcode API integration
+│   ├── NotificationManager.swift    # User notifications handling
+│   ├── BackgroundNotificationProcessor.swift # Background alerts
+│   └── ReportGenerator.swift        # Report generation service
+│
+├── Utils/
+│   ├── Extensions/
+│   │   ├── Date+Formatting.swift    # Date utilities
+│   │   └── UIApplication+TopVC.swift # UI helpers
+│   │
+│   └── Constants.swift              # App-wide constants
+│
+└── Resources/
+    ├── Assets.xcassets              # App icons and images
+    ├── Info.plist                   # App configuration
+    └── LaunchScreen.storyboard      # Launch screen
+    
+    
